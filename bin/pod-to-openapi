@@ -1,0 +1,11 @@
+#!/usr/bin/env perl
+#
+# PODNAME: pod-to-openapi
+#
+
+use strict;
+use warnings;
+
+use CourtIO::Pod::OpenAPI::App::PodToOpenAPI;
+
+CourtIO::Pod::OpenAPI::App::PodToOpenAPI->new_with_cmd;
