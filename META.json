@@ -1,0 +1,79 @@
+{
+   "abstract" : "Parse OpenAPI Specification from POD",
+   "author" : [
+      "CourtAPI Team <support@courtapi.com>"
+   ],
+   "dynamic_config" : 0,
+   "generated_by" : "Dist::Zilla version 6.012, CPAN::Meta::Converter version 2.150010",
+   "license" : [
+      "perl_5"
+   ],
+   "meta-spec" : {
+      "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
+      "version" : 2
+   },
+   "name" : "CourtIO-Pod-OpenAPI",
+   "prereqs" : {
+      "configure" : {
+         "requires" : {
+            "ExtUtils::MakeMaker" : "0",
+            "perl" : "5.013002"
+         }
+      },
+      "develop" : {
+         "requires" : {
+            "Test::Pod" : "1.41"
+         }
+      },
+      "runtime" : {
+         "requires" : {
+            "Carp::Assert::More" : "0",
+            "Fatal" : "0",
+            "File::Find::Rule" : "0",
+            "Hash::Merge::Simple" : "0",
+            "JSON::MaybeXS" : "0",
+            "Log::Log4perl" : "0",
+            "Log::Log4perl::Appender::ScreenColoredLevels" : "0",
+            "Moo" : "0",
+            "MooX::Cmd" : "0",
+            "MooX::Options" : "0",
+            "Pod::Elemental" : "0",
+            "Pod::Elemental::Transformer::Pod5" : "0",
+            "YAML::PP" : "0.021",
+            "YAML::PP::Common" : "0",
+            "namespace::clean" : "0",
+            "perl" : "5.013002",
+            "strict" : "0",
+            "strictures" : "2",
+            "warnings" : "0"
+         }
+      },
+      "test" : {
+         "requires" : {
+            "File::Spec" : "0",
+            "IO::Handle" : "0",
+            "IPC::Open3" : "0",
+            "JSON::PP" : "0",
+            "Test::Deep" : "0",
+            "Test::More" : "0.94",
+            "perl" : "5.013002"
+         }
+      }
+   },
+   "release_status" : "stable",
+   "resources" : {
+      "bugtracker" : {
+         "web" : "https://github.com/CourtAPI/courtio-pod-openapi/issues"
+      },
+      "homepage" : "https://github.com/CourtAPI/courtio-pod-openapi",
+      "repository" : {
+         "type" : "git",
+         "url" : "https://github.com/CourtAPI/courtio-pod-openapi.git",
+         "web" : "https://github.com/CourtAPI/courtio-pod-openapi"
+      }
+   },
+   "version" : "0.01",
+   "x_generated_by_perl" : "v5.26.2",
+   "x_serialization_backend" : "Cpanel::JSON::XS version 4.04"
+}
+

@@ -1,0 +1,49 @@
+---
+abstract: 'Parse OpenAPI Specification from POD'
+author:
+  - 'CourtAPI Team <support@courtapi.com>'
+build_requires:
+  File::Spec: '0'
+  IO::Handle: '0'
+  IPC::Open3: '0'
+  JSON::PP: '0'
+  Test::Deep: '0'
+  Test::More: '0.94'
+  perl: '5.013002'
+configure_requires:
+  ExtUtils::MakeMaker: '0'
+  perl: '5.013002'
+dynamic_config: 0
+generated_by: 'Dist::Zilla version 6.012, CPAN::Meta::Converter version 2.150010'
+license: perl
+meta-spec:
+  url: http://module-build.sourceforge.net/META-spec-v1.4.html
+  version: '1.4'
+name: CourtIO-Pod-OpenAPI
+requires:
+  Carp::Assert::More: '0'
+  Fatal: '0'
+  File::Find::Rule: '0'
+  Hash::Merge::Simple: '0'
+  JSON::MaybeXS: '0'
+  Log::Log4perl: '0'
+  Log::Log4perl::Appender::ScreenColoredLevels: '0'
+  Moo: '0'
+  MooX::Cmd: '0'
+  MooX::Options: '0'
+  Pod::Elemental: '0'
+  Pod::Elemental::Transformer::Pod5: '0'
+  YAML::PP: '0.021'
+  YAML::PP::Common: '0'
+  namespace::clean: '0'
+  perl: '5.013002'
+  strict: '0'
+  strictures: '2'
+  warnings: '0'
+resources:
+  bugtracker: https://github.com/CourtAPI/courtio-pod-openapi/issues
+  homepage: https://github.com/CourtAPI/courtio-pod-openapi
+  repository: https://github.com/CourtAPI/courtio-pod-openapi.git
+version: '0.01'
+x_generated_by_perl: v5.26.2
+x_serialization_backend: 'YAML::Tiny version 1.73'
