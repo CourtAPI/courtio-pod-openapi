@@ -7,11 +7,11 @@ use strictures 2;
 
 use Carp::Assert::More qw(assert_nonblank);
 use Hash::Merge::Simple qw();
+use Log::Log4perl ':easy';
 use Pod::Elemental::Transformer::Pod5;
 use Pod::Elemental;
-use YAML::PP::Common;
+use YAML::PP::Common qw(PRESERVE_ORDER);
 use YAML::PP;
-use Log::Log4perl ':easy';
 use namespace::clean;
 
 has controller_name => ( is => 'ro' );
@@ -28,7 +28,7 @@ has _yaml_pp => (
     YAML::PP->new(
       schema   => ['JSON'],
       boolean  => 'JSON::PP',
-      preserve => YAML::PP::Common::PRESERVE_ORDER()
+      preserve => PRESERVE_ORDER
     );
   }
 );
@@ -52,7 +52,7 @@ sub load_file {
   $document = Pod::Elemental::Transformer::Pod5->new
     ->transform_node($document);
 
-  my $controller_name = $filename =~ s|^.*?Controller/||;
+  my $controller_name = $filename =~ s|^.*?Controller/||r;
   $controller_name =~ s|/|::|g;
   $controller_name =~ s|\.pm$||;
 
@@ -85,7 +85,7 @@ sub parse_openapi_node {
   my $path;
 
   for my $node ($node->children->@*) {
-    if ($self->is_path_command($node)) {
+    if ($self->is_path_node($node)) {
       $path = $node->content;
       TRACE 'Found path: ', $path;
     }
