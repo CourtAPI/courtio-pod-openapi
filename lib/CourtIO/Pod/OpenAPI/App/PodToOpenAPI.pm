@@ -5,8 +5,11 @@ use strictures 2;
 use Moo;
 use MooX::Cmd;
 use MooX::Options;
-use Log::Log4perl ':easy';
+
+use CourtIO::Pod::OpenAPI;
+use Fatal qw(open);
 use File::Find::Rule;
+use Log::Log4perl ':easy';
 
 option directory => (
   is       => 'ro',
@@ -30,14 +33,60 @@ option json => (
   doc     => 'Output JSON instead of YAML'
 );
 
+option pretty => (
+  is      => 'ro',
+  default => sub { 0 },
+  doc     => 'Enable pretty JSON mode'
+);
+
 option trace => (
   is      => 'ro',
   default => sub { 0 },
   doc     => 'Enable trace logging'
 );
 
+has openapi_spec => (
+  is      => 'rw',
+  default => sub { {} }
+);
+
+has _json_maybexs => (
+  is      => 'ro',
+  lazy    => 1,
+  default => sub {
+    my $self = shift;
+
+    require JSON::MaybeXS;
+
+    my $json = JSON::MaybeXS->new->canonical->utf8;
+
+    if ($self->pretty) {
+      $json->pretty;
+    }
+
+    return $json;
+  }
+);
+
+has _yaml_pp => (
+  is      => 'ro',
+  lazy    => 1,
+  default => sub {
+    require YAML::PP;
+    require YAML::PP::Common;
+
+    return YAML::PP->new(
+      schema   => ['JSON'],
+      boolean  => 'JSON::PP',
+      preserve => YAML::PP::Common->PRESERVE_ORDER
+    );
+  }
+);
+
 sub execute {
   my $self = shift;
+
+  $self->_init_logger;
 
   my @files = File::Find::Rule->file
     ->name( '*.pm' )
@@ -46,12 +95,43 @@ sub execute {
   for my $file (@files) {
     $self->_process_file($file);
   }
+
+  my $output = $self->encode;
+
+  if ($self->output eq '-') {
+    print $output;
+  }
+  else {
+    open my $fh, '>', $self->output;
+
+    print $fh $output;
+
+    close $fh;
+  }
+}
+
+sub encode {
+  my $self = shift;
+
+  if ($self->json) {
+    return $self->_json_maybexs->encode( $self->openapi_spec );
+  }
+  else {
+    return $self->_yaml_pp->dump_string( $self->openapi_spec );
+  }
 }
 
 sub _process_file {
   my ($self, $filename) = @_;
 
   TRACE 'Processing file: ', $filename;
+  my $parser = CourtIO::Pod::OpenAPI->load_file($filename);
+
+  my $spec = $parser->extract_spec;
+
+  while (my ($path, $spec) = each %$spec) {
+    $self->openapi_spec->{paths}{$path} = $spec;
+  }
 }
 
 sub _init_logger {
