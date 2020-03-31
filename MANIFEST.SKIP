@@ -7,6 +7,7 @@
 ^\.gitignore$
 ^dist\.ini$
 ^MYMETA
+^README-DEV.md$
 ^\.travis\.yml$
 ^\.build$
 ^releases$
