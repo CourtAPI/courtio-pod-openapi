@@ -130,7 +130,7 @@ sub _process_file {
   my $spec = $parser->extract_spec;
 
   while (my ($path, $spec) = each %$spec) {
-    $self->openapi_spec->{paths}{$path} = $spec;
+    $self->openapi_spec->{$path} = $spec;
   }
 }
 

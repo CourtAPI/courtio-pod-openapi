@@ -1,6 +1,7 @@
 Revision history for CourtIO-Pod-OpenAPI
 
 {{$NEXT}}
+  - Don't include "paths" key in the output.
 
 "0.01  2020-03-31"
   - Initial version
