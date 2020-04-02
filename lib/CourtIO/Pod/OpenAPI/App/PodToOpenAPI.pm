@@ -1,5 +1,5 @@
 package CourtIO::Pod::OpenAPI::App::PodToOpenAPI;
-$CourtIO::Pod::OpenAPI::App::PodToOpenAPI::VERSION = '0.01';
+$CourtIO::Pod::OpenAPI::App::PodToOpenAPI::VERSION = '0.02';
 use strictures 2;
 
 use Moo;
@@ -130,7 +130,7 @@ sub _process_file {
   my $spec = $parser->extract_spec;
 
   while (my ($path, $spec) = each %$spec) {
-    $self->openapi_spec->{paths}{$path} = $spec;
+    $self->openapi_spec->{$path} = $spec;
   }
 }
 
@@ -169,7 +169,7 @@ CourtIO::Pod::OpenAPI::App::PodToOpenAPI
 
 =head1 VERSION
 
-version 0.01
+version 0.02
 
 =head1 AUTHOR
 
