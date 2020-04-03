@@ -1,0 +1,19 @@
+#!/bin/sh
+
+TAG=$1
+
+if [ -z "$TAG" ]; then
+  TAG="latest"
+fi
+
+context_dir=$(dirname $0)/..
+
+cd $context_dir
+
+if [ ! -f Makefile.PL ]; then
+    echo "Makefile.PL is not present"
+    echo "hint: run 'dzil build' and run from built distribution"
+    exit 1
+fi
+
+docker build -t courtapi/pod-to-openapi:$TAG .

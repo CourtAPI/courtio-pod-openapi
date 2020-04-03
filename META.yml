@@ -44,6 +44,6 @@ resources:
   bugtracker: https://github.com/CourtAPI/courtio-pod-openapi/issues
   homepage: https://github.com/CourtAPI/courtio-pod-openapi
   repository: https://github.com/CourtAPI/courtio-pod-openapi.git
-version: '0.02'
+version: '0.03'
 x_generated_by_perl: v5.26.2
 x_serialization_backend: 'YAML::Tiny version 1.73'

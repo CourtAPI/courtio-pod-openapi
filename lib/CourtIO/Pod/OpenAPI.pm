@@ -1,5 +1,5 @@
 package CourtIO::Pod::OpenAPI;
-$CourtIO::Pod::OpenAPI::VERSION = '0.02';
+$CourtIO::Pod::OpenAPI::VERSION = '0.03';
 # ABSTRACT: Parse OpenAPI Specification from POD
 
 use Moo;
@@ -178,7 +178,7 @@ CourtIO::Pod::OpenAPI - Parse OpenAPI Specification from POD
 
 =head1 VERSION
 
-version 0.02
+version 0.03
 
 =head1 AUTHOR
 

@@ -1,5 +1,9 @@
 Revision history for CourtIO-Pod-OpenAPI
 
+"0.03  2020-04-03"
+  - Sort paths in output by path name.  YAML spec of each path is still in
+    "preserve order" mode
+
 "0.02  2020-04-02"
   - Don't include "paths" key in the output.
 

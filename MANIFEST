@@ -12,6 +12,7 @@ bin/pod-to-openapi
 cpanfile
 lib/CourtIO/Pod/OpenAPI.pm
 lib/CourtIO/Pod/OpenAPI/App/PodToOpenAPI.pm
+script/build-docker-image
 t/00-compile.t
 t/author-pod-syntax.t
 t/data/Petshop/Controller/Pets.pm
