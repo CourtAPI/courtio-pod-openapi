@@ -167,8 +167,8 @@ sub _expand_mojo_to {
   # can't expand unless we know the controller name
   my $controller_name = $self->controller_name or return;
 
-  if ($mojo_to =~ /^@/) {
-    $mojo_to =~ s/^@/${controller_name}#/;
+  if ($mojo_to =~ /^@#?/) {
+    $mojo_to =~ s/^@#?/${controller_name}#/;
 
     TRACE 'x-mojo-to: ', $mojo_to;
 
