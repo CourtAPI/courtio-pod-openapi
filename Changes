@@ -1,6 +1,7 @@
 Revision history for CourtIO-Pod-OpenAPI
 
 {{$NEXT}}
+  - Add some basic sanity checking on each parsed openapi node
 
 "0.03  2020-04-03"
   - Sort paths in output by path name.  YAML spec of each path is still in
