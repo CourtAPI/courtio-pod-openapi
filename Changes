@@ -1,6 +1,8 @@
 Revision history for CourtIO-Pod-OpenAPI
 
 {{$NEXT}}
+
+"0.04  2020-04-03"
   - Allow x-mojo-to to be either @method_name or @#method_name.
   - Add some basic sanity checking on each parsed openapi node
 
