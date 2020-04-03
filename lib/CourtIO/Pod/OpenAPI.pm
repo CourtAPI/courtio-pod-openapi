@@ -101,6 +101,18 @@ sub parse_openapi_node {
     }
   }
 
+  # Do some sanity checking on what we parsed.
+  unless (keys %spec) {
+    # TODO dump the content?
+    ERROR 'No OpenAPI specs were found in this node';
+    ERROR map { $_->content } $node->children->@*;
+  }
+
+  # =path something was seen, but no =for :method was seen after it
+  if (defined $path and not defined $spec{$path}) {
+    ERROR "=path $path was encountered, but no methods were found for it.";
+  }
+
   return \%spec;
 }
 
