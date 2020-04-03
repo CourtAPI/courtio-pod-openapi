@@ -1,5 +1,5 @@
 package CourtIO::Pod::OpenAPI;
-$CourtIO::Pod::OpenAPI::VERSION = '0.03';
+$CourtIO::Pod::OpenAPI::VERSION = '0.04';
 # ABSTRACT: Parse OpenAPI Specification from POD
 
 use Moo;
@@ -101,6 +101,18 @@ sub parse_openapi_node {
     }
   }
 
+  # Do some sanity checking on what we parsed.
+  unless (keys %spec) {
+    # TODO dump the content?
+    ERROR 'No OpenAPI specs were found in this node';
+    ERROR map { $_->content } $node->children->@*;
+  }
+
+  # =path something was seen, but no =for :method was seen after it
+  if (defined $path and not defined $spec{$path}) {
+    ERROR "=path $path was encountered, but no methods were found for it.";
+  }
+
   return \%spec;
 }
 
@@ -178,7 +190,7 @@ CourtIO::Pod::OpenAPI - Parse OpenAPI Specification from POD
 
 =head1 VERSION
 
-version 0.03
+version 0.04
 
 =head1 AUTHOR
 
