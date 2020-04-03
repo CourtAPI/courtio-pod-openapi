@@ -117,8 +117,31 @@ sub encode {
     return $self->_json_maybexs->encode( $self->openapi_spec );
   }
   else {
-    return $self->_yaml_pp->dump_string( $self->openapi_spec );
+    return $self->_openapi_spec_as_yaml_string;
   }
+}
+
+# returns the spec yaml string, but with the paths sorted only
+sub _openapi_spec_as_yaml_string {
+  my $self = shift;
+
+  my $out = '';
+
+  my %api_spec = $self->openapi_spec->%*;
+
+  # sort by path so that output order is predictable
+  for my $path (sort keys %api_spec) {
+    my %path_spec = ($path => $api_spec{$path});
+    my $path_spec = $api_spec{$path};
+    my $yaml_string = $self->_yaml_pp->dump_string( \%path_spec );
+
+    # evil hack, remove document separator from first line and smash onto output string
+    $yaml_string =~ s/^---\s*//;
+
+    $out .= $yaml_string;
+  }
+
+  return $out;
 }
 
 sub _process_file {
