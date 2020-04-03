@@ -10,7 +10,6 @@ use Hash::Merge::Simple qw();
 use Log::Log4perl ':easy';
 use Pod::Elemental::Transformer::Pod5;
 use Pod::Elemental;
-use YAML::PP::Common qw(PRESERVE_ORDER);
 use YAML::PP;
 use namespace::clean;
 
@@ -28,7 +27,6 @@ has _yaml_pp => (
     YAML::PP->new(
       schema   => ['JSON'],
       boolean  => 'JSON::PP',
-      preserve => PRESERVE_ORDER
     );
   }
 );

@@ -1,6 +1,7 @@
 Revision history for CourtIO-Pod-OpenAPI
 
 {{$NEXT}}
+  - Don't use PRESERVE_ORDER, sorted output is more consistent
 
 "0.04  2020-04-03"
   - Allow x-mojo-to to be either @method_name or @#method_name.
