@@ -1,5 +1,5 @@
 package CourtIO::Pod::OpenAPI;
-$CourtIO::Pod::OpenAPI::VERSION = '0.04';
+$CourtIO::Pod::OpenAPI::VERSION = '0.05';
 # ABSTRACT: Parse OpenAPI Specification from POD
 
 use Moo;
@@ -10,7 +10,6 @@ use Hash::Merge::Simple qw();
 use Log::Log4perl ':easy';
 use Pod::Elemental::Transformer::Pod5;
 use Pod::Elemental;
-use YAML::PP::Common qw(PRESERVE_ORDER);
 use YAML::PP;
 use namespace::clean;
 
@@ -28,7 +27,6 @@ has _yaml_pp => (
     YAML::PP->new(
       schema   => ['JSON'],
       boolean  => 'JSON::PP',
-      preserve => PRESERVE_ORDER
     );
   }
 );
@@ -190,7 +188,7 @@ CourtIO::Pod::OpenAPI - Parse OpenAPI Specification from POD
 
 =head1 VERSION
 
-version 0.04
+version 0.05
 
 =head1 AUTHOR
 
