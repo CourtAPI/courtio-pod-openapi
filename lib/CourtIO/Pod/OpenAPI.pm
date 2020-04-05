@@ -1,15 +1,20 @@
 package CourtIO::Pod::OpenAPI;
-$CourtIO::Pod::OpenAPI::VERSION = '0.05';
+$CourtIO::Pod::OpenAPI::VERSION = '0.06';
 # ABSTRACT: Parse OpenAPI Specification from POD
 
 use Moo;
 use strictures 2;
+
+use feature qw(signatures);
+no warnings qw(experimental::signatures);
 
 use Carp::Assert::More qw(assert_nonblank);
 use Hash::Merge::Simple qw();
 use Log::Log4perl ':easy';
 use Pod::Elemental::Transformer::Pod5;
 use Pod::Elemental;
+use String::Util qw(hascontent);
+use String::CamelCase qw(decamelize);
 use YAML::PP;
 use namespace::clean;
 
@@ -42,9 +47,7 @@ my @POSSIBLE_METHODS = qw(
   trace
 );
 
-sub load_file {
-  my ($class, $filename) = @_;
-
+sub load_file ($class, $filename) {
   my $document = Pod::Elemental->read_file($filename);
 
   $document = Pod::Elemental::Transformer::Pod5->new
@@ -60,9 +63,7 @@ sub load_file {
   );
 }
 
-sub extract_spec {
-  my $self = shift;
-
+sub extract_spec ($self) {
   my $api_spec = {};
 
   for my $node ($self->document->children->@*) {
@@ -75,9 +76,29 @@ sub extract_spec {
   return $api_spec;
 }
 
-sub parse_openapi_node {
-  my ($self, $node) = @_;
+sub default_controller_path ($self, $path) {
+  # we will replace leading "@/" with the default controller path
+  if (hascontent($path)) {
+    $path =~ s|^@/?||;
+  }
 
+  my $controller = $self->controller_name or return;
+
+  my $controller_path = join '/',
+    map { s/_/-/gr }
+    map { decamelize($_) }
+    split /::/, $controller;
+
+  if (hascontent($path)) {
+    $controller_path .= "/$path";
+  }
+
+  TRACE 'Computed default path: ', $controller_path;
+
+  return "/$controller_path";
+}
+
+sub parse_openapi_node ($self, $node) {
   my %spec;
 
   my $path;
@@ -88,10 +109,15 @@ sub parse_openapi_node {
       TRACE 'Found path: ', $path;
     }
     elsif ($self->is_method_node($node)) {
-      assert_nonblank($path, '=path must be set before using =for :method');
-
       my $method = $node->format_name;
       TRACE 'Found method ', $method;
+
+      if (not defined $path or $path =~ /^\@/) {
+        $path = $self->default_controller_path($path);
+      }
+
+      # make sure we got a path
+      assert_nonblank($path, '=path must be set before using =for :method');
 
       if (my $data = $self->parse_api_method_node($node)) {
         $spec{$path}{$method} = $data;
@@ -114,23 +140,17 @@ sub parse_openapi_node {
   return \%spec;
 }
 
-sub is_openapi_node {
-  my ($self, $node) = @_;
-
+sub is_openapi_node ($self, $node) {
   return $node->isa('Pod::Elemental::Element::Pod5::Region')
     && $node->format_name eq 'openapi';
 }
 
-sub is_path_node {
-  my ($self, $node) = @_;
-
+sub is_path_node ($self, $node) {
   return $node->isa('Pod::Elemental::Element::Pod5::Command')
     && $node->command eq 'path';
 }
 
-sub is_method_node {
-  my ($self, $node) = @_;
-
+sub is_method_node ($self, $node) {
   return 0 unless $node->isa('Pod::Elemental::Element::Pod5::Region');
 
   for my $method (@POSSIBLE_METHODS) {
@@ -140,9 +160,7 @@ sub is_method_node {
   return 0;
 }
 
-sub parse_api_method_node {
-  my ($self, $node) = @_;
-
+sub parse_api_method_node ($self, $node) {
   # Everything after =for is a single child paragraph, up to blank line
   my $content = $node->children->[0]->content;
 
@@ -155,9 +173,7 @@ sub parse_api_method_node {
   return $data;
 }
 
-sub _expand_mojo_to {
-  my ($self, $spec) = @_;
-
+sub _expand_mojo_to ($self, $spec) {
   my $mojo_to = $spec->{'x-mojo-to'};
 
   return unless defined $mojo_to;
@@ -188,7 +204,7 @@ CourtIO::Pod::OpenAPI - Parse OpenAPI Specification from POD
 
 =head1 VERSION
 
-version 0.05
+version 0.06
 
 =head1 AUTHOR
 
