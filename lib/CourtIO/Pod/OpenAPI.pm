@@ -10,6 +10,8 @@ use Hash::Merge::Simple qw();
 use Log::Log4perl ':easy';
 use Pod::Elemental::Transformer::Pod5;
 use Pod::Elemental;
+use String::Util qw(hascontent);
+use String::CamelCase qw(decamelize);
 use YAML::PP;
 use namespace::clean;
 
@@ -75,6 +77,30 @@ sub extract_spec {
   return $api_spec;
 }
 
+sub default_controller_path {
+  my ($self, $path) = @_;
+
+  # we will replace leading "@/" with the default controller path
+  if (hascontent($path)) {
+    $path =~ s|^@/?||;
+  }
+
+  my $controller = $self->controller_name or return;
+
+  my $controller_path = join '/',
+    map { s/_/-/gr }
+    map { decamelize($_) }
+    split /::/, $controller;
+
+  if (hascontent($path)) {
+    $controller_path .= "/$path";
+  }
+
+  TRACE 'Computed default path: ', $controller_path;
+
+  return "/$controller_path";
+}
+
 sub parse_openapi_node {
   my ($self, $node) = @_;
 
@@ -88,10 +114,15 @@ sub parse_openapi_node {
       TRACE 'Found path: ', $path;
     }
     elsif ($self->is_method_node($node)) {
-      assert_nonblank($path, '=path must be set before using =for :method');
-
       my $method = $node->format_name;
       TRACE 'Found method ', $method;
+
+      if (not defined $path or $path =~ /^\@/) {
+        $path = $self->default_controller_path($path);
+      }
+
+      # make sure we got a path
+      assert_nonblank($path, '=path must be set before using =for :method');
 
       if (my $data = $self->parse_api_method_node($node)) {
         $spec{$path}{$method} = $data;
