@@ -22,13 +22,36 @@ dzil test -v
 
 Extra tests can be enabled with `--author`
 
-## Building a release
+## Buliding an unpublished docker image
 
-Make a release with:
+You can build the distribution bundle with:
+
+```
+dzil build
+```
+
+Then `cd` into the `CourtIO::Pod::OpenAPI-X.YY` directory.
+
+You can make the docker image locally with
+
+```
+./script/build-docker-image
+```
+
+## Making a release
+
+You can make a published (on docker hub) release with:
 
 ```
 dzil release
 ```
 
-This just creates a build, saves the build results to the `build/releases`
-branch, tags it, and pushes the git repo.
+This will do the following:
+
+- Updates the version in `Changes`
+- Builds the distribution files
+- Commits the distribution files to the `build/releases` branch
+- Creates a git tag for the current version being built
+- Pushes branches `master` and `build/releases` to git remote `origin` (including tags)
+
+This will auto trigger a build on docker hub of the official release image.
