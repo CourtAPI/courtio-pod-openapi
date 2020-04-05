@@ -1,6 +1,8 @@
 Revision history for CourtIO-Pod-OpenAPI
 
 {{$NEXT}}
+
+"0.06  2020-04-05"
   - Add support for default paths and path prefixes for routes
   - Use perl subroutine signatures
 
