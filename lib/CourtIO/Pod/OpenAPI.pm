@@ -5,6 +5,9 @@ package CourtIO::Pod::OpenAPI;
 use Moo;
 use strictures 2;
 
+use feature qw(signatures);
+no warnings qw(experimental::signatures);
+
 use Carp::Assert::More qw(assert_nonblank);
 use Hash::Merge::Simple qw();
 use Log::Log4perl ':easy';
@@ -44,9 +47,7 @@ my @POSSIBLE_METHODS = qw(
   trace
 );
 
-sub load_file {
-  my ($class, $filename) = @_;
-
+sub load_file ($class, $filename) {
   my $document = Pod::Elemental->read_file($filename);
 
   $document = Pod::Elemental::Transformer::Pod5->new
@@ -62,9 +63,7 @@ sub load_file {
   );
 }
 
-sub extract_spec {
-  my $self = shift;
-
+sub extract_spec ($self) {
   my $api_spec = {};
 
   for my $node ($self->document->children->@*) {
@@ -77,9 +76,7 @@ sub extract_spec {
   return $api_spec;
 }
 
-sub default_controller_path {
-  my ($self, $path) = @_;
-
+sub default_controller_path ($self, $path) {
   # we will replace leading "@/" with the default controller path
   if (hascontent($path)) {
     $path =~ s|^@/?||;
@@ -101,9 +98,7 @@ sub default_controller_path {
   return "/$controller_path";
 }
 
-sub parse_openapi_node {
-  my ($self, $node) = @_;
-
+sub parse_openapi_node ($self, $node) {
   my %spec;
 
   my $path;
@@ -145,23 +140,17 @@ sub parse_openapi_node {
   return \%spec;
 }
 
-sub is_openapi_node {
-  my ($self, $node) = @_;
-
+sub is_openapi_node ($self, $node) {
   return $node->isa('Pod::Elemental::Element::Pod5::Region')
     && $node->format_name eq 'openapi';
 }
 
-sub is_path_node {
-  my ($self, $node) = @_;
-
+sub is_path_node ($self, $node) {
   return $node->isa('Pod::Elemental::Element::Pod5::Command')
     && $node->command eq 'path';
 }
 
-sub is_method_node {
-  my ($self, $node) = @_;
-
+sub is_method_node ($self, $node) {
   return 0 unless $node->isa('Pod::Elemental::Element::Pod5::Region');
 
   for my $method (@POSSIBLE_METHODS) {
@@ -171,9 +160,7 @@ sub is_method_node {
   return 0;
 }
 
-sub parse_api_method_node {
-  my ($self, $node) = @_;
-
+sub parse_api_method_node ($self, $node) {
   # Everything after =for is a single child paragraph, up to blank line
   my $content = $node->children->[0]->content;
 
@@ -186,9 +173,7 @@ sub parse_api_method_node {
   return $data;
 }
 
-sub _expand_mojo_to {
-  my ($self, $spec) = @_;
-
+sub _expand_mojo_to ($self, $spec) {
   my $mojo_to = $spec->{'x-mojo-to'};
 
   return unless defined $mojo_to;

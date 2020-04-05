@@ -6,10 +6,14 @@ use Moo;
 use MooX::Cmd;
 use MooX::Options;
 
+use feature qw(signatures);
+no warnings qw(experimental::signatures);
+
 use CourtIO::Pod::OpenAPI;
 use Fatal qw(open);
 use File::Find::Rule;
 use Log::Log4perl ':easy';
+
 
 option directory => (
   is       => 'ro',
@@ -82,9 +86,7 @@ has _yaml_pp => (
   }
 );
 
-sub execute {
-  my $self = shift;
-
+sub execute ($self, @args) {
   $self->_init_logger;
 
   my @files = File::Find::Rule->file
@@ -109,9 +111,7 @@ sub execute {
   }
 }
 
-sub encode {
-  my $self = shift;
-
+sub encode ($self) {
   if ($self->json) {
     return $self->_json_maybexs->encode( $self->openapi_spec );
   }
@@ -120,9 +120,7 @@ sub encode {
   }
 }
 
-sub _process_file {
-  my ($self, $filename) = @_;
-
+sub _process_file ($self, $filename) {
   TRACE 'Processing file: ', $filename;
   my $parser = CourtIO::Pod::OpenAPI->load_file($filename);
 
@@ -133,9 +131,7 @@ sub _process_file {
   }
 }
 
-sub _init_logger {
-  my $self = shift;
-
+sub _init_logger ($self) {
   Log::Log4perl::init_once(\<<~'END');
     log4perl.logger = INFO, Screen
 
