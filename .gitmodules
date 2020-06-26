@@ -1,0 +1,3 @@
+[submodule "vendor/courtio-yaml-include"]
+	path = vendor/courtio-yaml-include
+	url = https://github.com/CourtAPI/courtio-yaml-include
