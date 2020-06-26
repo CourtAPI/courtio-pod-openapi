@@ -1,4 +1,4 @@
-FROM perl:5.30
+FROM courtapi/courtio-yaml-include:v0.07
 
 RUN cpanm install --notest Carton \
   && rm -rf $HOME/.cpanm
@@ -6,13 +6,6 @@ RUN cpanm install --notest Carton \
 WORKDIR /app
 
 ENV PERL5LIB /app/local/lib/perl5:/app/lib
-
-# install CourtIO::YAML::Include
-COPY vendor/courtio-yaml-include/cpanfile .
-RUN carton install \
-  && rm -rf $HOME/.cpanm local/cache cpanfile.snapshot \
-  && rm -f cpanfile
-ADD vendor/courtio-yaml-include/lib /app/lib
 
 COPY cpanfile .
 RUN carton install \
