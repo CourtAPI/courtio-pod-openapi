@@ -1,5 +1,5 @@
 package CourtIO::Pod::OpenAPI::App::PodToOpenAPI;
-$CourtIO::Pod::OpenAPI::App::PodToOpenAPI::VERSION = '0.06';
+$CourtIO::Pod::OpenAPI::App::PodToOpenAPI::VERSION = '0.07';
 use strictures 2;
 
 use Moo;
@@ -21,6 +21,14 @@ option directory => (
   required => 1,
   short    => 'd',
   doc      => 'Base directory of .pm files to scan'
+);
+
+option include => (
+  is      => 'ro',
+  format  => 's@',
+  default => sub { [] },
+  short   => 'I',
+  doc     => 'Include directory'
 );
 
 option output => (
@@ -75,14 +83,8 @@ has _json_maybexs => (
 has _yaml_pp => (
   is      => 'ro',
   lazy    => 1,
-  default => sub {
-    require YAML::PP;
-    require YAML::PP::Common;
-
-    return YAML::PP->new(
-      schema   => ['JSON'],
-      boolean  => 'JSON::PP',
-    );
+  default => sub ($self) {
+    CourtIO::YAML::PP->new(paths => $self->include);
   }
 );
 
@@ -122,7 +124,7 @@ sub encode ($self) {
 
 sub _process_file ($self, $filename) {
   TRACE 'Processing file: ', $filename;
-  my $parser = CourtIO::Pod::OpenAPI->load_file($filename);
+  my $parser = CourtIO::Pod::OpenAPI->load_file($filename, include_paths => $self->include);
 
   my $spec = $parser->extract_spec;
 
@@ -142,7 +144,7 @@ sub _init_logger ($self) {
 
     # [PID] file-line: LEVEL message
     log4perl.appender.Screen.layout.ConversionPattern = %d [%P] %F{2}-%L: %p %m%n
-  END
+END
 
   if ($self->trace) {
     INFO 'TRACE logging enabled';
@@ -164,7 +166,7 @@ CourtIO::Pod::OpenAPI::App::PodToOpenAPI
 
 =head1 VERSION
 
-version 0.06
+version 0.07
 
 =head1 AUTHOR
 

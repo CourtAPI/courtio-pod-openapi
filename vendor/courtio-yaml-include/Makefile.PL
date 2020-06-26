@@ -2,41 +2,38 @@
 use strict;
 use warnings;
 
-use 5.013002;
+use 5.006;
 
 use ExtUtils::MakeMaker;
 
 my %WriteMakefileArgs = (
-  "ABSTRACT" => "Parse OpenAPI Specification from POD",
+  "ABSTRACT" => "YAML::PP with CourtIO::YAML::PP::Schema::Include",
   "AUTHOR" => "CourtAPI Team <support\@courtapi.com>",
   "CONFIGURE_REQUIRES" => {
     "ExtUtils::MakeMaker" => 0
   },
-  "DISTNAME" => "CourtIO-Pod-OpenAPI",
+  "DISTNAME" => "CourtIO-YAML-PP",
   "EXE_FILES" => [
-    "bin/pod-to-openapi"
+    "bin/yaml-include"
   ],
   "LICENSE" => "perl",
-  "MIN_PERL_VERSION" => "5.013002",
-  "NAME" => "CourtIO::Pod::OpenAPI",
+  "MIN_PERL_VERSION" => "5.006",
+  "NAME" => "CourtIO::YAML::PP",
   "PREREQ_PM" => {
-    "Carp::Assert::More" => 0,
     "Fatal" => 0,
-    "File::Find::Rule" => 0,
-    "Hash::Merge::Simple" => 0,
-    "JSON::MaybeXS" => 0,
+    "File::Basename" => 0,
+    "File::Slurp" => 0,
+    "File::Spec" => 0,
+    "JSON::XS" => 0,
     "Log::Log4perl" => 0,
     "Log::Log4perl::Appender::ScreenColoredLevels" => 0,
     "Moo" => 0,
     "MooX::Cmd" => 0,
     "MooX::Options" => 0,
-    "Pod::Elemental" => 0,
-    "Pod::Elemental::Transformer::Pod5" => 0,
-    "String::CamelCase" => 0,
-    "String::Util" => 0,
     "YAML::PP" => "0.021",
-    "feature" => 0,
+    "YAML::PP::Common" => 0,
     "namespace::clean" => 0,
+    "parent" => 0,
     "strict" => 0,
     "strictures" => 2,
     "warnings" => 0
@@ -45,8 +42,6 @@ my %WriteMakefileArgs = (
     "File::Spec" => 0,
     "IO::Handle" => 0,
     "IPC::Open3" => 0,
-    "JSON::PP" => 0,
-    "Test::Deep" => 0,
     "Test::More" => "0.94"
   },
   "VERSION" => "0.07",
@@ -57,29 +52,23 @@ my %WriteMakefileArgs = (
 
 
 my %FallbackPrereqs = (
-  "Carp::Assert::More" => 0,
   "Fatal" => 0,
-  "File::Find::Rule" => 0,
+  "File::Basename" => 0,
+  "File::Slurp" => 0,
   "File::Spec" => 0,
-  "Hash::Merge::Simple" => 0,
   "IO::Handle" => 0,
   "IPC::Open3" => 0,
-  "JSON::MaybeXS" => 0,
-  "JSON::PP" => 0,
+  "JSON::XS" => 0,
   "Log::Log4perl" => 0,
   "Log::Log4perl::Appender::ScreenColoredLevels" => 0,
   "Moo" => 0,
   "MooX::Cmd" => 0,
   "MooX::Options" => 0,
-  "Pod::Elemental" => 0,
-  "Pod::Elemental::Transformer::Pod5" => 0,
-  "String::CamelCase" => 0,
-  "String::Util" => 0,
-  "Test::Deep" => 0,
   "Test::More" => "0.94",
   "YAML::PP" => "0.021",
-  "feature" => 0,
+  "YAML::PP::Common" => 0,
   "namespace::clean" => 0,
+  "parent" => 0,
   "strict" => 0,
   "strictures" => 2,
   "warnings" => 0

@@ -1,7 +1,7 @@
-This archive contains the distribution CourtIO-Pod-OpenAPI,
+This archive contains the distribution CourtIO-YAML-PP,
 version 0.07:
 
-  Parse OpenAPI Specification from POD
+  YAML::PP with CourtIO::YAML::PP::Schema::Include
 
 This software is copyright (c) 2020 by CourtAPI.
 

@@ -1,5 +1,5 @@
 {
-   "abstract" : "Parse OpenAPI Specification from POD",
+   "abstract" : "YAML::PP with CourtIO::YAML::PP::Schema::Include",
    "author" : [
       "CourtAPI Team <support@courtapi.com>"
    ],
@@ -12,12 +12,12 @@
       "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
       "version" : 2
    },
-   "name" : "CourtIO-Pod-OpenAPI",
+   "name" : "CourtIO-YAML-PP",
    "prereqs" : {
       "configure" : {
          "requires" : {
             "ExtUtils::MakeMaker" : "0",
-            "perl" : "5.013002"
+            "perl" : "5.006"
          }
       },
       "develop" : {
@@ -27,24 +27,21 @@
       },
       "runtime" : {
          "requires" : {
-            "Carp::Assert::More" : "0",
             "Fatal" : "0",
-            "File::Find::Rule" : "0",
-            "Hash::Merge::Simple" : "0",
-            "JSON::MaybeXS" : "0",
+            "File::Basename" : "0",
+            "File::Slurp" : "0",
+            "File::Spec" : "0",
+            "JSON::XS" : "0",
             "Log::Log4perl" : "0",
             "Log::Log4perl::Appender::ScreenColoredLevels" : "0",
             "Moo" : "0",
             "MooX::Cmd" : "0",
             "MooX::Options" : "0",
-            "Pod::Elemental" : "0",
-            "Pod::Elemental::Transformer::Pod5" : "0",
-            "String::CamelCase" : "0",
-            "String::Util" : "0",
             "YAML::PP" : "0.021",
-            "feature" : "0",
+            "YAML::PP::Common" : "0",
             "namespace::clean" : "0",
-            "perl" : "5.013002",
+            "parent" : "0",
+            "perl" : "5.006",
             "strict" : "0",
             "strictures" : "2",
             "warnings" : "0"
@@ -55,23 +52,21 @@
             "File::Spec" : "0",
             "IO::Handle" : "0",
             "IPC::Open3" : "0",
-            "JSON::PP" : "0",
-            "Test::Deep" : "0",
             "Test::More" : "0.94",
-            "perl" : "5.013002"
+            "perl" : "5.006"
          }
       }
    },
    "release_status" : "stable",
    "resources" : {
       "bugtracker" : {
-         "web" : "https://github.com/CourtAPI/courtio-pod-openapi/issues"
+         "web" : "https://github.com/CourtAPI/courtio-yaml-include/issues"
       },
-      "homepage" : "https://github.com/CourtAPI/courtio-pod-openapi",
+      "homepage" : "https://github.com/CourtAPI/courtio-yaml-include",
       "repository" : {
          "type" : "git",
-         "url" : "https://github.com/CourtAPI/courtio-pod-openapi.git",
-         "web" : "https://github.com/CourtAPI/courtio-pod-openapi"
+         "url" : "https://github.com/CourtAPI/courtio-yaml-include.git",
+         "web" : "https://github.com/CourtAPI/courtio-yaml-include"
       }
    },
    "version" : "0.07",
