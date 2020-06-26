@@ -1,6 +1,7 @@
 Revision history for CourtIO-Pod-OpenAPI
 
 {{$NEXT}}
+  - Use CourtIO::YAML::PP for includes support
 
 "0.06  2020-04-05"
   - Add support for default paths and path prefixes for routes

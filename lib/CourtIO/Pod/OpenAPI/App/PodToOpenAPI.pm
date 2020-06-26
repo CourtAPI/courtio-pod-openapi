@@ -23,6 +23,14 @@ option directory => (
   doc      => 'Base directory of .pm files to scan'
 );
 
+option include => (
+  is      => 'ro',
+  format  => 's@',
+  default => sub { [] },
+  short   => 'I',
+  doc     => 'Include directory'
+);
+
 option output => (
   is      => 'ro',
   format  => 's',
@@ -75,14 +83,8 @@ has _json_maybexs => (
 has _yaml_pp => (
   is      => 'ro',
   lazy    => 1,
-  default => sub {
-    require YAML::PP;
-    require YAML::PP::Common;
-
-    return YAML::PP->new(
-      schema   => ['JSON'],
-      boolean  => 'JSON::PP',
-    );
+  default => sub ($self) {
+    CourtIO::YAML::PP->new(paths => $self->include);
   }
 );
 
@@ -122,7 +124,7 @@ sub encode ($self) {
 
 sub _process_file ($self, $filename) {
   TRACE 'Processing file: ', $filename;
-  my $parser = CourtIO::Pod::OpenAPI->load_file($filename);
+  my $parser = CourtIO::Pod::OpenAPI->load_file($filename, include_paths => $self->include);
 
   my $spec = $parser->extract_spec;
 

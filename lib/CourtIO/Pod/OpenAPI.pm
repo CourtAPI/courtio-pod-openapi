@@ -9,13 +9,14 @@ use feature qw(signatures);
 no warnings qw(experimental::signatures);
 
 use Carp::Assert::More qw(assert_nonblank);
+use CourtIO::YAML::PP;
+use CourtIO::YAML::PP::Schema::Include;
 use Hash::Merge::Simple qw();
 use Log::Log4perl ':easy';
 use Pod::Elemental::Transformer::Pod5;
 use Pod::Elemental;
 use String::Util qw(hascontent);
 use String::CamelCase qw(decamelize);
-use YAML::PP;
 use namespace::clean;
 
 has controller_name => ( is => 'ro' );
@@ -26,14 +27,9 @@ has document => (
   required => 1
 );
 
-has _yaml_pp => (
-  is      => 'ro',
-  default => sub {
-    YAML::PP->new(
-      schema   => ['JSON'],
-      boolean  => 'JSON::PP',
-    );
-  }
+has include_paths => (
+    is      => 'ro',
+    default => sub { [] }
 );
 
 my @POSSIBLE_METHODS = qw(
@@ -47,7 +43,7 @@ my @POSSIBLE_METHODS = qw(
   trace
 );
 
-sub load_file ($class, $filename) {
+sub load_file ($class, $filename, %args) {
   my $document = Pod::Elemental->read_file($filename);
 
   $document = Pod::Elemental::Transformer::Pod5->new
@@ -60,6 +56,7 @@ sub load_file ($class, $filename) {
   return $class->new(
     controller_name => $controller_name,
     document        => $document,
+    %args
   );
 }
 
@@ -171,6 +168,10 @@ sub parse_api_method_node ($self, $node) {
   }
 
   return $data;
+}
+
+sub _yaml_pp ($self) {
+  CourtIO::YAML::PP->new(paths => $self->include_paths);
 }
 
 sub _expand_mojo_to ($self, $spec) {
