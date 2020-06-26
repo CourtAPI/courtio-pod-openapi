@@ -1,6 +1,7 @@
 Revision history for CourtIO-Pod-OpenAPI
 
 {{$NEXT}}
+  - Drop git submodule and just build on top of CourtIO::YAML::PP's docker file
 
 "0.07  2020-06-26"
   - Use CourtIO::YAML::PP for includes support
