@@ -19,20 +19,20 @@ cmp_deeply(
   $spec,
   {
     '/pets/{petId}' => {
+      parameters  => [
+        {
+          name        => 'petId',
+          in          => 'path',
+          required    => JSON::PP::true,
+          description => 'The id of the pet to retrieve',
+          schema      => { type => 'string' }
+        }
+      ],
       get => {
         summary     => 'Info for a specific pet',
         operationId => 'showPetById',
         'x-mojo-to' => 'Pets#show',
         tags        => [ 'pets' ],
-        parameters  => [
-          {
-            name        => 'petId',
-            in          => 'path',
-            required    => JSON::PP::true,
-            description => 'The id of the pet to retrieve',
-            schema      => { type => 'string' }
-          }
-        ],
         responses => {
           200 => {
             description => 'Expected response to a valid request',
