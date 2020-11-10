@@ -1,6 +1,8 @@
 Revision history for CourtIO-Pod-OpenAPI
 
 {{$NEXT}}
+
+"0.09  2020-11-10"
   - Add support for =for :parameters to specify common path params
 
 "0.08  2020-06-26"
