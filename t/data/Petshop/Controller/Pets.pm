@@ -60,19 +60,20 @@ responses:
 
 =path /pets/{petId}
 
-=for :get
-summary: Info for a specific pet
-operationId: showPetById
-x-mojo-to: "@show"
-tags:
-- pets
-parameters:
+=for :parameters
 - name: petId
   in: path
   required: true
   description: The id of the pet to retrieve
   schema:
     type: string
+
+=for :get
+summary: Info for a specific pet
+operationId: showPetById
+x-mojo-to: "@show"
+tags:
+- pets
 responses:
   '200':
     description: Expected response to a valid request
@@ -88,6 +89,8 @@ responses:
           $ref: "#/components/schemas/Error"
 
 =end :openapi
+
+=cut
 
 1;
 

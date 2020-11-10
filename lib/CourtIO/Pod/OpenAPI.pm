@@ -101,9 +101,19 @@ sub parse_openapi_node ($self, $node) {
   my $path;
 
   for my $node ($node->children->@*) {
+    TRACE 'Node: ', ref($node);
     if ($self->is_path_node($node)) {
       $path = $node->content;
       TRACE 'Found path: ', $path;
+    }
+    elsif ($self->is_common_parameters_node($node)) {
+      TRACE 'Found common parameters node: ', $node->children->[0]->content;
+
+      assert_nonblank($path, '=path must be set before using =for :parameters');
+
+      if (my $data = $self->parse_common_parameters_node($node)) {
+        $spec{$path}{parameters} = $data;
+      }
     }
     elsif ($self->is_method_node($node)) {
       my $method = $node->format_name;
@@ -147,6 +157,12 @@ sub is_path_node ($self, $node) {
     && $node->command eq 'path';
 }
 
+sub is_common_parameters_node ($self, $node) {
+  return 0 unless $node->isa('Pod::Elemental::Element::Pod5::Region');
+
+  return $node->format_name eq 'parameters';
+}
+
 sub is_method_node ($self, $node) {
   return 0 unless $node->isa('Pod::Elemental::Element::Pod5::Region');
 
@@ -155,6 +171,12 @@ sub is_method_node ($self, $node) {
   }
 
   return 0;
+}
+
+sub parse_common_parameters_node ($self, $node) {
+  my $content = $node->children->[0]->content;
+
+  return $self->_yaml_pp->load_string($content);
 }
 
 sub parse_api_method_node ($self, $node) {
