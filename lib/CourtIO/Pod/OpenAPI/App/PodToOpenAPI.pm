@@ -17,7 +17,7 @@ use Log::Log4perl ':easy';
 
 option directory => (
   is       => 'ro',
-  format   => 's',
+  format   => 's@',
   required => 1,
   short    => 'd',
   doc      => 'Base directory of .pm files to scan'
@@ -93,7 +93,7 @@ sub execute ($self, @args) {
 
   my @files = File::Find::Rule->file
     ->name( '*.pm' )
-    ->in( $self->directory );
+    ->in( $self->directory->@* );
 
   for my $file (@files) {
     $self->_process_file($file);

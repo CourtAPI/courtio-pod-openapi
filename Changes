@@ -1,6 +1,7 @@
 Revision history for CourtIO-Pod-OpenAPI
 
 {{$NEXT}}
+  - Add support for multiple --directory params
 
 "0.09  2020-11-10"
   - Add support for =for :parameters to specify common path params
