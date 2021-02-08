@@ -1,5 +1,5 @@
 package CourtIO::Pod::OpenAPI::App::PodToOpenAPI;
-$CourtIO::Pod::OpenAPI::App::PodToOpenAPI::VERSION = '0.09';
+$CourtIO::Pod::OpenAPI::App::PodToOpenAPI::VERSION = '0.10';
 use strictures 2;
 
 use Moo;
@@ -17,7 +17,7 @@ use Log::Log4perl ':easy';
 
 option directory => (
   is       => 'ro',
-  format   => 's',
+  format   => 's@',
   required => 1,
   short    => 'd',
   doc      => 'Base directory of .pm files to scan'
@@ -93,7 +93,7 @@ sub execute ($self, @args) {
 
   my @files = File::Find::Rule->file
     ->name( '*.pm' )
-    ->in( $self->directory );
+    ->in( $self->directory->@* );
 
   for my $file (@files) {
     $self->_process_file($file);
@@ -166,7 +166,7 @@ CourtIO::Pod::OpenAPI::App::PodToOpenAPI
 
 =head1 VERSION
 
-version 0.09
+version 0.10
 
 =head1 AUTHOR
 
