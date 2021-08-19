@@ -1,6 +1,7 @@
 Revision history for CourtIO-Pod-OpenAPI
 
 {{$NEXT}}
+  - Update to handle the various formats that x-mojo-to can take such as passing format constraints
 
 "0.10  2021-02-08"
   - Add support for multiple --directory params

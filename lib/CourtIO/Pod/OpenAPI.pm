@@ -204,13 +204,36 @@ sub _expand_mojo_to ($self, $spec) {
   # can't expand unless we know the controller name
   my $controller_name = $self->controller_name or return;
 
-  if ($mojo_to =~ /^@#?/) {
-    $mojo_to =~ s/^@#?/${controller_name}#/;
+  # mojo_to could be a string, an arrayref, or a hashref.
+  # "x-mojo-to": "pet#list"
+  # "x-mojo-to": {"controller": "pet", "action": "list", "foo": 123}
+  # "x-mojo-to": ["pet#list", {"foo": 123}, ["format": ["json"]]]
+  #
 
-    TRACE 'x-mojo-to: ', $mojo_to;
-
-    $spec->{'x-mojo-to'} = $mojo_to;
+  unless (ref $mojo_to) {
+    # its a plain string
+    _expand_controller_reference(\$mojo_to, $controller_name);
   }
+  elsif (ref $mojo_to eq 'HASH') {
+    _expand_controller_reference( \($mojo_to->{controller}), $controller_name );
+  }
+  elsif (ref $mojo_to eq 'ARRAY') {
+    _expand_controller_reference( \($mojo_to->[0]), $controller_name );
+  }
+
+  $spec->{'x-mojo-to'} = $mojo_to;
+}
+
+sub _expand_controller_reference {
+  my ($value_ref, $controller_name) = @_;
+
+  if ($$value_ref =~ /^@#?/) {
+    $$value_ref =~ s/^@#?/${controller_name}#/;
+
+    TRACE 'controller: ', $value_ref;
+  }
+
+  return $$value_ref;
 }
 
 1;
