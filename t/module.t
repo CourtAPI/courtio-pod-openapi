@@ -31,7 +31,7 @@ cmp_deeply(
       get => {
         summary     => 'Info for a specific pet',
         operationId => 'showPetById',
-        'x-mojo-to' => 'Pets#show',
+        'x-mojo-to' => [ 'Pets#show', {}, [ "format", ["json"] ] ],
         tags        => [ 'pets' ],
         responses => {
           200 => {

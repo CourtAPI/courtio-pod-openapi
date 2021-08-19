@@ -71,7 +71,7 @@ responses:
 =for :get
 summary: Info for a specific pet
 operationId: showPetById
-x-mojo-to: "@show"
+x-mojo-to: ["@show", {}, ["format", ["json"]]]
 tags:
 - pets
 responses:

@@ -1,5 +1,5 @@
 package CourtIO::Pod::OpenAPI::App::PodToOpenAPI;
-$CourtIO::Pod::OpenAPI::App::PodToOpenAPI::VERSION = '0.10';
+$CourtIO::Pod::OpenAPI::App::PodToOpenAPI::VERSION = '0.11';
 use strictures 2;
 
 use Moo;
@@ -166,7 +166,7 @@ CourtIO::Pod::OpenAPI::App::PodToOpenAPI
 
 =head1 VERSION
 
-version 0.10
+version 0.11
 
 =head1 AUTHOR
 
