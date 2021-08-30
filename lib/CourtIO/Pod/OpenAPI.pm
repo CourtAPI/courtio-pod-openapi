@@ -1,5 +1,5 @@
 package CourtIO::Pod::OpenAPI;
-$CourtIO::Pod::OpenAPI::VERSION = '0.11';
+$CourtIO::Pod::OpenAPI::VERSION = '0.12';
 # ABSTRACT: Parse OpenAPI Specification from POD
 
 use Moo;
@@ -11,7 +11,6 @@ no warnings qw(experimental::signatures);
 use Carp::Assert::More qw(assert_nonblank);
 use CourtIO::YAML::PP;
 use CourtIO::YAML::PP::Schema::Include;
-use Hash::Merge::Simple qw();
 use Log::Log4perl ':easy';
 use Pod::Elemental::Transformer::Pod5;
 use Pod::Elemental;
@@ -66,7 +65,17 @@ sub extract_spec ($self) {
   for my $node ($self->document->children->@*) {
     if ($self->is_openapi_node($node)) {
       my $spec = $self->parse_openapi_node($node);
-      $api_spec = Hash::Merge::Simple::merge($api_spec, $spec);
+
+      for my $path (keys %$spec) {
+        for my $method (keys $spec->{$path}->%*) {
+          if (defined $api_spec->{$path}{$method}) {
+            LOGDIE "CONFLICT!  Duplicate entries for $method $path found!";
+          }
+
+          TRACE "Adding API spec node for $method $path";
+          $api_spec->{$path}{$method} = $spec->{$path}{$method};
+        }
+      }
     }
   }
 
@@ -250,7 +259,7 @@ CourtIO::Pod::OpenAPI - Parse OpenAPI Specification from POD
 
 =head1 VERSION
 
-version 0.11
+version 0.12
 
 =head1 AUTHOR
 

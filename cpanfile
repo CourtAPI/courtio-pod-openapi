@@ -4,7 +4,6 @@
 requires "Carp::Assert::More" => "0";
 requires "Fatal" => "0";
 requires "File::Find::Rule" => "0";
-requires "Hash::Merge::Simple" => "0";
 requires "JSON::MaybeXS" => "0";
 requires "Log::Log4perl" => "0";
 requires "Log::Log4perl::Appender::ScreenColoredLevels" => "0";
@@ -18,7 +17,7 @@ requires "String::Util" => "0";
 requires "YAML::PP" => "0.021";
 requires "feature" => "0";
 requires "namespace::clean" => "0";
-requires "perl" => "5.013002";
+requires "perl" => "5.014";
 requires "strict" => "0";
 requires "strictures" => "2";
 requires "warnings" => "0";
@@ -30,12 +29,12 @@ on 'test' => sub {
   requires "JSON::PP" => "0";
   requires "Test::Deep" => "0";
   requires "Test::More" => "0.94";
-  requires "perl" => "5.013002";
+  requires "perl" => "5.014";
 };
 
 on 'configure' => sub {
   requires "ExtUtils::MakeMaker" => "0";
-  requires "perl" => "5.013002";
+  requires "perl" => "5.014";
 };
 
 on 'develop' => sub {

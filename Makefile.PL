@@ -2,7 +2,7 @@
 use strict;
 use warnings;
 
-use 5.013002;
+use 5.014;
 
 use ExtUtils::MakeMaker;
 
@@ -17,13 +17,12 @@ my %WriteMakefileArgs = (
     "bin/pod-to-openapi"
   ],
   "LICENSE" => "perl",
-  "MIN_PERL_VERSION" => "5.013002",
+  "MIN_PERL_VERSION" => "5.014",
   "NAME" => "CourtIO::Pod::OpenAPI",
   "PREREQ_PM" => {
     "Carp::Assert::More" => 0,
     "Fatal" => 0,
     "File::Find::Rule" => 0,
-    "Hash::Merge::Simple" => 0,
     "JSON::MaybeXS" => 0,
     "Log::Log4perl" => 0,
     "Log::Log4perl::Appender::ScreenColoredLevels" => 0,
@@ -49,7 +48,7 @@ my %WriteMakefileArgs = (
     "Test::Deep" => 0,
     "Test::More" => "0.94"
   },
-  "VERSION" => "0.11",
+  "VERSION" => "0.12",
   "test" => {
     "TESTS" => "t/*.t"
   }
@@ -61,7 +60,6 @@ my %FallbackPrereqs = (
   "Fatal" => 0,
   "File::Find::Rule" => 0,
   "File::Spec" => 0,
-  "Hash::Merge::Simple" => 0,
   "IO::Handle" => 0,
   "IPC::Open3" => 0,
   "JSON::MaybeXS" => 0,

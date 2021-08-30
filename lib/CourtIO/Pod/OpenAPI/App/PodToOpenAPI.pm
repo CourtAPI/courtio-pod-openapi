@@ -1,5 +1,5 @@
 package CourtIO::Pod::OpenAPI::App::PodToOpenAPI;
-$CourtIO::Pod::OpenAPI::App::PodToOpenAPI::VERSION = '0.11';
+$CourtIO::Pod::OpenAPI::App::PodToOpenAPI::VERSION = '0.12';
 use strictures 2;
 
 use Moo;
@@ -128,8 +128,14 @@ sub _process_file ($self, $filename) {
 
   my $spec = $parser->extract_spec;
 
-  while (my ($path, $spec) = each %$spec) {
-    $self->openapi_spec->{$path} = $spec;
+  for my $path (keys %$spec) {
+    for my $method (keys $spec->{$path}->%*) {
+      if (defined $self->openapi_spec->{$path}{$method}) {
+        LOGDIE "Conflict! a definition already exists for '$method' for path $path";
+      }
+
+      $self->openapi_spec->{$path}{$method} = $spec->{$path}{$method};
+    }
   }
 }
 
@@ -166,7 +172,7 @@ CourtIO::Pod::OpenAPI::App::PodToOpenAPI
 
 =head1 VERSION
 
-version 0.11
+version 0.12
 
 =head1 AUTHOR
 
