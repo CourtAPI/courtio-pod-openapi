@@ -128,8 +128,14 @@ sub _process_file ($self, $filename) {
 
   my $spec = $parser->extract_spec;
 
-  while (my ($path, $spec) = each %$spec) {
-    $self->openapi_spec->{$path} = $spec;
+  for my $path (keys %$spec) {
+    for my $method (keys $spec->{$path}->%*) {
+      if (defined $self->openapi_spec->{$path}{$method}) {
+        LOGDIE "Conflict! a definition already exists for '$method' for path $path";
+      }
+
+      $self->openapi_spec->{$path}{$method} = $spec->{$path}{$method};
+    }
   }
 }
 
