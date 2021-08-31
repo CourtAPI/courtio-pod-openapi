@@ -16,6 +16,8 @@ Revision history for CourtIO-Pod-OpenAPI
 
 "0.13  2021-08-31"
 
+"0.13  2021-08-31"
+
 "0.12  2021-08-29"
   - Fix merging of API spec so that different operations can be in different controllers
 
