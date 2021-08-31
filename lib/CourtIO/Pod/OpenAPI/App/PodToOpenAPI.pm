@@ -102,10 +102,11 @@ sub execute ($self, @args) {
   my $output = $self->encode;
 
   if ($self->output eq '-') {
+    binmode STDOUT, ':utf8';
     print $output;
   }
   else {
-    open my $fh, '>', $self->output;
+    open my $fh, '>:encoding(UTF-8)', $self->output;
 
     print $fh $output;
 

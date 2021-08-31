@@ -1,6 +1,7 @@
 Revision history for CourtIO-Pod-OpenAPI
 
 {{$NEXT}}
+  - Set UTF-8 encoding out output file handles
 
 "0.12  2021-08-29"
   - Fix merging of API spec so that different operations can be in different controllers
